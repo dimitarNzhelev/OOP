@@ -55,27 +55,56 @@ int main()
     Dress p;
     fstream file;
     file.open("dress.txt", ios::in);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("File not found.");
+    }
     while (file >> p)
     {
         dresses.push_back(p);
     }
     file.close();
     double bust, waist, hips;
-    cout << "Enter your measurements: "; // - bust, waist, hips
+    cout << "Enter your measurements: \n"; // - bust, waist, hips
     // TODO load the user's measurements from the console
+
     cin >> bust;
+    while (bust <= 0)
+    {
+        cout << "Invalid value, please try again. \n";
+        cin >> bust;
+    };
+
     cin >> waist;
+    while (waist <= 0)
+    {
+        cout << "Invalid value, please try again. \n";
+        cin >> waist;
+    };
+
     cin >> hips;
+    while (hips <= 0)
+    {
+        cout << "Invalid value, please try again. \n";
+        cin >> waist;
+    };
 
     // TODO print the dresses that fit the user in the console, and save them in a file
-    file.open("output.txt", ios::out);
-    for (Dress d : dresses)
+    file.open("matches.txt", ios::out);
+    if (file.good())
     {
-        if (d.doesFit(bust, hips, waist))
+        for (Dress d : dresses)
         {
-            cout << d;
-            file << d;
+            if (d.doesFit(bust, hips, waist))
+            {
+                cout << d;
+                file << d;
+            }
         }
+    }
+    else
+    {
+        throw std::runtime_error("Insufficient file permissions.");
     }
     file.close();
     return 0;
